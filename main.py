@@ -13,6 +13,12 @@ def main():
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(LINE)
+    # Revision: read-back verification — confirm what landed on disk
+    # matches the intended line byte-for-byte; fail loudly otherwise.
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        if f.read() != LINE:
+            print("entry.txt read-back mismatch", file=sys.stderr)
+            return 1
     print(LINE)
     return 0
 
